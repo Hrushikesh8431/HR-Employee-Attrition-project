@@ -9,7 +9,7 @@ import pandas as pd
 model = pickle.load(open('rf_model.pkl', 'rb'))
 
 # =========================
-# TITLE
+# PAGE TITLE
 # =========================
 
 st.title('HR Employee Attrition Classification App')
@@ -20,13 +20,33 @@ st.title('HR Employee Attrition Classification App')
 
 Age = st.number_input('Age', 18, 60, 36)
 
-DailyRate = st.number_input('DailyRate', 102, 1499, 802)
+DailyRate = st.number_input(
+    'DailyRate',
+    102,
+    1499,
+    802
+)
 
-DistanceFromHome = st.number_input('DistanceFromHome', 1, 29, 7)
+DistanceFromHome = st.number_input(
+    'DistanceFromHome',
+    1,
+    29,
+    7
+)
 
-Education = st.number_input('Education', 1, 5, 3)
+Education = st.number_input(
+    'Education',
+    1,
+    5,
+    3
+)
 
-EmployeeNumber = st.number_input('EmployeeNumber', 1, 2068, 1020)
+EmployeeNumber = st.number_input(
+    'EmployeeNumber',
+    1,
+    2068,
+    1020
+)
 
 EnvironmentSatisfaction = st.number_input(
     'EnvironmentSatisfaction',
@@ -35,13 +55,33 @@ EnvironmentSatisfaction = st.number_input(
     3
 )
 
-HourlyRate = st.number_input('HourlyRate', 30, 100, 66)
+HourlyRate = st.number_input(
+    'HourlyRate',
+    30,
+    100,
+    66
+)
 
-JobInvolvement = st.number_input('JobInvolvement', 1, 4, 3)
+JobInvolvement = st.number_input(
+    'JobInvolvement',
+    1,
+    4,
+    3
+)
 
-JobLevel = st.number_input('JobLevel', 1, 5, 2)
+JobLevel = st.number_input(
+    'JobLevel',
+    1,
+    5,
+    2
+)
 
-JobSatisfaction = st.number_input('JobSatisfaction', 1, 4, 3)
+JobSatisfaction = st.number_input(
+    'JobSatisfaction',
+    1,
+    4,
+    3
+)
 
 MonthlyIncome = st.number_input(
     'MonthlyIncome',
@@ -145,9 +185,15 @@ YearsWithCurrManager = st.number_input(
 # CATEGORICAL INPUTS
 # =========================
 
-OverTime = st.selectbox('OverTime', ['No', 'Yes'])
+OverTime = st.selectbox(
+    'OverTime',
+    ['No', 'Yes']
+)
 
-Gender = st.selectbox('Gender', ['Female', 'Male'])
+Gender = st.selectbox(
+    'Gender',
+    ['Female', 'Male']
+)
 
 Department = st.selectbox(
     'Department',
@@ -258,7 +304,7 @@ MaritalStatus_Married = 1 if MaritalStatus == 'Married' else 0
 MaritalStatus_Single = 1 if MaritalStatus == 'Single' else 0
 
 # =========================
-# CREATE DATAFRAME
+# CREATE INPUT DATAFRAME
 # =========================
 
 input_features = pd.DataFrame({
@@ -287,11 +333,16 @@ input_features = pd.DataFrame({
     'YearsInCurrentRole': [YearsInCurrentRole],
     'YearsSinceLastPromotion': [YearsSinceLastPromotion],
     'YearsWithCurrManager': [YearsWithCurrManager],
+
     'Over_Time': [Over_Time],
+
     'Gender_Female': [Gender_Female],
     'Gender_Male': [Gender_Male],
+
     'Department_Code': [Department_Code],
+
     'BusinessTravel_Code': [BusinessTravel_Code],
+
     'JobRole_Code': [JobRole_Code],
 
     'EducationField_Human Resources': [EducationField_HR],
@@ -312,7 +363,7 @@ input_features = pd.DataFrame({
 
 if st.button('Predict'):
 
-    # Match exact training columns
+    # Match training feature order
     model_features = model.feature_names_in_
 
     input_features = input_features.reindex(
@@ -320,15 +371,18 @@ if st.button('Predict'):
         fill_value=0
     )
 
-    # Prediction
-    prediction = model.predict(input_features)[0]
-
-    # Probability
+    # Prediction probability
     prediction_proba = model.predict_proba(
         input_features
     )[0][1]
 
-    # Progress Bar
+    # Custom threshold
+    threshold = 0.60
+
+    # =========================
+    # DISPLAY RESULTS
+    # =========================
+
     st.subheader("Prediction Probability")
 
     st.progress(int(prediction_proba * 100))
@@ -338,18 +392,24 @@ if st.button('Predict'):
         f"{prediction_proba * 100:.2f}%"
     )
 
-    # Final Output
-    if prediction == 1:
+    # Final prediction
+    if prediction_proba >= threshold:
+
         st.error(
             f'⚠️ High risk of Attrition '
             f'({prediction_proba*100:.2f}%)'
         )
+
     else:
+
         st.success(
             f'😊 Low risk of Attrition '
             f'({(1-prediction_proba)*100:.2f}%)'
         )
 
-    # Show input data
+    # =========================
+    # SHOW INPUT FEATURES
+    # =========================
+
     with st.expander("View Input Features"):
         st.write(input_features)
