@@ -5,209 +5,171 @@ import pandas as pd
 # =========================
 # LOAD MODEL
 # =========================
+
 model = pickle.load(open('rf_model.pkl', 'rb'))
 
 # =========================
 # TITLE
 # =========================
+
 st.title('HR Employee Attrition Classification App')
 
 # =========================
-# INPUTS
+# NUMERICAL INPUTS
 # =========================
 
-Age = st.number_input('Age', min_value=18, max_value=60, value=36)
+Age = st.number_input('Age', 18, 60, 36)
 
-DailyRate = st.number_input(
-    'DailyRate',
-    min_value=102,
-    max_value=1499,
-    value=802
-)
+DailyRate = st.number_input('DailyRate', 102, 1499, 802)
 
-DistanceFromHome = st.number_input(
-    'DistanceFromHome',
-    min_value=1,
-    max_value=29,
-    value=7
-)
+DistanceFromHome = st.number_input('DistanceFromHome', 1, 29, 7)
 
-Education = st.number_input(
-    'Education',
-    min_value=1,
-    max_value=5,
-    value=3
-)
+Education = st.number_input('Education', 1, 5, 3)
 
-EmployeeNumber = st.number_input(
-    'EmployeeNumber',
-    min_value=1,
-    max_value=2068,
-    value=1020
-)
+EmployeeNumber = st.number_input('EmployeeNumber', 1, 2068, 1020)
 
 EnvironmentSatisfaction = st.number_input(
     'EnvironmentSatisfaction',
-    min_value=1,
-    max_value=4,
-    value=3
+    1,
+    4,
+    3
 )
 
-HourlyRate = st.number_input(
-    'HourlyRate',
-    min_value=30,
-    max_value=100,
-    value=66
-)
+HourlyRate = st.number_input('HourlyRate', 30, 100, 66)
 
-JobInvolvement = st.number_input(
-    'JobInvolvement',
-    min_value=1,
-    max_value=4,
-    value=3
-)
+JobInvolvement = st.number_input('JobInvolvement', 1, 4, 3)
 
-JobLevel = st.number_input(
-    'JobLevel',
-    min_value=1,
-    max_value=5,
-    value=2
-)
+JobLevel = st.number_input('JobLevel', 1, 5, 2)
 
-JobSatisfaction = st.number_input(
-    'JobSatisfaction',
-    min_value=1,
-    max_value=4,
-    value=3
-)
+JobSatisfaction = st.number_input('JobSatisfaction', 1, 4, 3)
 
 MonthlyIncome = st.number_input(
     'MonthlyIncome',
-    min_value=1009,
-    max_value=19999,
-    value=4919
+    1009,
+    19999,
+    4919
 )
 
 MonthlyRate = st.number_input(
     'MonthlyRate',
-    min_value=2094,
-    max_value=26999,
-    value=14235
+    2094,
+    26999,
+    14235
 )
 
 NumCompaniesWorked = st.number_input(
     'NumCompaniesWorked',
-    min_value=0,
-    max_value=9,
-    value=2
+    0,
+    9,
+    2
 )
 
 PercentSalaryHike = st.number_input(
     'PercentSalaryHike',
-    min_value=11,
-    max_value=25,
-    value=14
+    11,
+    25,
+    14
 )
 
 PerformanceRating = st.number_input(
     'PerformanceRating',
-    min_value=3,
-    max_value=4,
-    value=3
+    3,
+    4,
+    3
 )
 
 RelationshipSatisfaction = st.number_input(
     'RelationshipSatisfaction',
-    min_value=1,
-    max_value=4,
-    value=3
+    1,
+    4,
+    3
 )
 
 StockOptionLevel = st.number_input(
     'StockOptionLevel',
-    min_value=0,
-    max_value=3,
-    value=1
+    0,
+    3,
+    1
 )
 
 TotalWorkingYears = st.number_input(
     'TotalWorkingYears',
-    min_value=0,
-    max_value=40,
-    value=10
+    0,
+    40,
+    10
 )
 
 TrainingTimesLastYear = st.number_input(
     'TrainingTimesLastYear',
-    min_value=0,
-    max_value=6,
-    value=3
+    0,
+    6,
+    3
 )
 
 WorkLifeBalance = st.number_input(
     'WorkLifeBalance',
-    min_value=1,
-    max_value=4,
-    value=3
+    1,
+    4,
+    3
 )
 
 YearsAtCompany = st.number_input(
     'YearsAtCompany',
-    min_value=0,
-    max_value=40,
-    value=5
+    0,
+    40,
+    5
 )
 
 YearsInCurrentRole = st.number_input(
     'YearsInCurrentRole',
-    min_value=0,
-    max_value=18,
-    value=3
+    0,
+    18,
+    3
 )
 
 YearsSinceLastPromotion = st.number_input(
     'YearsSinceLastPromotion',
-    min_value=0,
-    max_value=15,
-    value=1
+    0,
+    15,
+    1
 )
 
 YearsWithCurrManager = st.number_input(
     'YearsWithCurrManager',
-    min_value=0,
-    max_value=17,
-    value=3
+    0,
+    17,
+    3
 )
 
 # =========================
 # CATEGORICAL INPUTS
 # =========================
 
-OverTime = st.selectbox('OverTime', ('No', 'Yes'))
+OverTime = st.selectbox('OverTime', ['No', 'Yes'])
 
-Gender = st.selectbox('Gender', ('Female', 'Male'))
+Gender = st.selectbox('Gender', ['Female', 'Male'])
 
 Department = st.selectbox(
     'Department',
-    (
+    [
         'Sales',
         'Research & Development',
         'Human Resources'
-    )
+    ]
 )
 
 BusinessTravel = st.selectbox(
     'BusinessTravel',
-    (
+    [
         'Non-Travel',
         'Travel_Rarely',
         'Travel_Frequently'
-    )
+    ]
 )
 
 JobRole = st.selectbox(
     'JobRole',
-    (
+    [
         'Sales Executive',
         'Research Scientist',
         'Laboratory Technician',
@@ -217,28 +179,28 @@ JobRole = st.selectbox(
         'Sales Representative',
         'Research Director',
         'Human Resources'
-    )
+    ]
 )
 
 EducationField = st.selectbox(
     'EducationField',
-    (
+    [
         'Human Resources',
         'Life Sciences',
         'Marketing',
         'Medical',
         'Other',
         'Technical Degree'
-    )
+    ]
 )
 
 MaritalStatus = st.selectbox(
     'MaritalStatus',
-    (
+    [
         'Divorced',
         'Married',
         'Single'
-    )
+    ]
 )
 
 # =========================
@@ -296,7 +258,7 @@ MaritalStatus_Married = 1 if MaritalStatus == 'Married' else 0
 MaritalStatus_Single = 1 if MaritalStatus == 'Single' else 0
 
 # =========================
-# DATAFRAME
+# CREATE DATAFRAME
 # =========================
 
 input_features = pd.DataFrame({
@@ -350,27 +312,44 @@ input_features = pd.DataFrame({
 
 if st.button('Predict'):
 
+    # Match exact training columns
+    model_features = model.feature_names_in_
+
+    input_features = input_features.reindex(
+        columns=model_features,
+        fill_value=0
+    )
+
+    # Prediction
     prediction = model.predict(input_features)[0]
 
-    prediction_proba = model.predict_proba(input_features)[0][1]
+    # Probability
+    prediction_proba = model.predict_proba(
+        input_features
+    )[0][1]
 
+    # Progress Bar
     st.subheader("Prediction Probability")
 
     st.progress(int(prediction_proba * 100))
 
     st.write(
-        f"Attrition Probability: {prediction_proba * 100:.2f}%"
+        f"Attrition Probability: "
+        f"{prediction_proba * 100:.2f}%"
     )
 
+    # Final Output
     if prediction == 1:
         st.error(
-            f'⚠️ High risk of Attrition ({prediction_proba*100:.2f}%)'
+            f'⚠️ High risk of Attrition '
+            f'({prediction_proba*100:.2f}%)'
         )
     else:
         st.success(
-            f'😊 Low risk of Attrition ({(1-prediction_proba)*100:.2f}%)'
+            f'😊 Low risk of Attrition '
+            f'({(1-prediction_proba)*100:.2f}%)'
         )
 
-    # DEBUG VIEW
+    # Show input data
     with st.expander("View Input Features"):
         st.write(input_features)
